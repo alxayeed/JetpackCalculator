@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.alxayeed.calculatorcompose.utils.CalculatorUtils
+import com.alxayeed.calculatorcompose.util.CalculatorUtils
 
 @Composable
 fun CalculatorButton(

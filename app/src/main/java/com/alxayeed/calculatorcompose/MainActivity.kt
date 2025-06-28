@@ -111,7 +111,7 @@ fun CalculatorApp() {
 
 @Composable
 fun HighlightedInputText(input: String) {
-    val operators = setOf('+', '-', '*', '/')
+    val operators = setOf('+', '-', '*', '/', '(', ')', '%', '^')
 
     val annotatedString = buildAnnotatedString {
         input.forEach { char ->
