@@ -30,6 +30,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.util.Stack
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,12 +69,7 @@ fun CalculatorApp() {
                             .background(color = Color(0xFF223344), shape = RoundedCornerShape(12.dp))
                             .padding(16.dp)
                     ) {
-                        Text(
-                            text = input.ifEmpty { "0" },
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = Color.White,
-                            modifier = Modifier.align(Alignment.TopStart)
-                        )
+                        HighlightedInputText(input=input.ifEmpty { "0" })
 
                         Text(
                             text = result,
@@ -135,6 +134,32 @@ fun CalculatorButton(label: String, onClick: () -> Unit) {
         Text(label, fontSize = 40.sp)
     }
 }
+
+
+
+@Composable
+fun HighlightedInputText(input: String) {
+    val operators = setOf('+', '-', '*', '/')
+
+    val annotatedString = buildAnnotatedString {
+        input.forEach { char ->
+            if (char in operators) {
+                withStyle(style = SpanStyle(color = Color(0xFFFF5722))) { // example: orange color for operators
+                    append(char)
+                }
+            } else {
+                append(char)
+            }
+        }
+    }
+
+    Text(
+        text = annotatedString.ifEmpty { AnnotatedString("0") },
+        style = MaterialTheme.typography.headlineMedium,
+        color = Color.White,
+    )
+}
+
 
 fun eval(expression: String): Double {
     val tokens = tokenize(expression)
