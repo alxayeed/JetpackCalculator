@@ -1,5 +1,6 @@
 package com.alxayeed.calculatorcompose
 
+import ClearButton
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,16 +8,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -35,10 +32,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.alxayeed.calculatorcompose.components.CustomIconButton
 import com.alxayeed.calculatorcompose.components.ModeToggle
-import java.util.Stack
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,10 +82,19 @@ fun CalculatorApp() {
                         modifier = Modifier.align(Alignment.BottomEnd)
                     )
                 }
-                ModeToggle(
-                    isAdvanced = isAdvanced,
-                    onToggle = { isAdvanced = !isAdvanced }
-                )
+                Row ( verticalAlignment = Alignment.CenterVertically ){
+                    ClearButton(
+                        onClick = {
+                            input = ""
+                            result = "0"
+                        },
+                    )
+
+                    ModeToggle(
+                        isAdvanced = isAdvanced,
+                        onToggle = { isAdvanced = !isAdvanced }
+                    )
+                }
             }
 
 
