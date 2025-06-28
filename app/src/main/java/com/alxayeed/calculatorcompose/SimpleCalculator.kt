@@ -1,11 +1,11 @@
 package com.alxayeed.calculatorcompose
 
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.alxayeed.calculatorcompose.components.CalculatorButton
 
 @Composable
 fun SimpleCalculator(
@@ -30,26 +30,12 @@ fun SimpleCalculator(
                 verticalAlignment = Alignment.Top,
             ) {
                 for (label in row) {
-                    CalculatorButton(label) {
-                        when (label) {
-                            "=" -> {
-                                onResultChange(
-                                    try {
-                                        eval(input).toString()
-                                    } catch (e: Exception) {
-                                        "Error: $e"
-                                    }
-                                )
-                            }
-                            "C" -> {
-                                onInputChange("")
-                                onResultChange("0")
-                            }
-                            else -> {
-                                onInputChange(input + label)
-                            }
-                        }
-                    }
+                    CalculatorButton(
+                        label = label,
+                        input = input,
+                        onInputChange = onInputChange,
+                        onResultChange = onResultChange
+                    )
                 }
             }
         }

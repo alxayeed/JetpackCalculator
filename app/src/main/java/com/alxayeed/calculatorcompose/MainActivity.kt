@@ -13,7 +13,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,6 +36,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.alxayeed.calculatorcompose.components.CustomIconButton
+import com.alxayeed.calculatorcompose.components.ModeToggle
 import java.util.Stack
 
 class MainActivity : ComponentActivity() {
@@ -43,12 +49,16 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalculatorApp() {
     var input by remember { mutableStateOf("") }
     var result by remember { mutableStateOf("0") }
+    var isAdvanced by remember { mutableStateOf(false) }
 
-    Scaffold { paddingValues ->
+    Scaffold {
+        paddingValues ->
+
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -59,49 +69,43 @@ fun CalculatorApp() {
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
+            Column {
 
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(250.dp)
-                            .background(color = Color(0xFF223344), shape = RoundedCornerShape(12.dp))
-                            .padding(16.dp)
-                    ) {
-                        HighlightedInputText(input=input.ifEmpty { "0" })
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .background(color = Color(0xFF223344), shape = RoundedCornerShape(12.dp))
+                        .padding(16.dp)
+                ) {
+                    HighlightedInputText(input = input.ifEmpty { "0" })
 
-                        Text(
-                            text = result,
-                            style = MaterialTheme.typography.headlineLarge,
-                            color = Color(0xFF4CAF50), // nice green for result
-                            modifier = Modifier.align(Alignment.BottomEnd)
-                        )
-                    }
-
-            SimpleCalculator(
-                input = input,
-                onInputChange = { input = it },
-                onResultChange = { result = it }
-            )
-
+                    Text(
+                        text = result,
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = Color(0xFF4CAF50),
+                        modifier = Modifier.align(Alignment.BottomEnd)
+                    )
+                }
+                ModeToggle(
+                    isAdvanced = isAdvanced,
+                    onToggle = { isAdvanced = !isAdvanced }
+                )
+            }
 
 
-
+            if (isAdvanced) {
+                AdvancedCalculator(input, onInputChange = { input = it }, onResultChange = { result = it })
+            } else {
+                SimpleCalculator(input, onInputChange = { input = it }, onResultChange = { result = it })
+            }
 
         }
     }
 }
 
-@Composable
-fun CalculatorButton(label: String, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier
-            .size(80.dp)
-    ) {
-        Text(label, fontSize = 40.sp)
-    }
-}
+
 
 
 
