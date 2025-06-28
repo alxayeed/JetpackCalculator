@@ -2,6 +2,7 @@ package com.alxayeed.calculatorcompose.util
 
 import java.util.Stack
 import kotlin.math.pow
+import kotlin.math.sqrt
 
 object CalculatorUtils {
 
@@ -11,20 +12,21 @@ object CalculatorUtils {
         "*" to 2,
         "/" to 2,
         "%" to 2,
-        "^" to 3
+        "^" to 3,
+        "√" to 4,
+        "!" to 4
     )
 
     /**
-     * Tokenizes the input expression into numbers, operators, and parentheses.
+     * Tokenizes the input expression into numbers and operators.
      */
     fun tokenize(expr: String): List<String> {
-        val regex = Regex("""(\d+(\.\d+)?|[-+*/%^()])""")
+        val regex = Regex("""(\d+(\.\d+)?|[+\-*/%^√!])""")
         return regex.findAll(expr.replace(" ", "")).map { it.value }.toList()
     }
 
     /**
-     * Converts the list of tokens from infix to postfix notation using
-     * the Shunting Yard algorithm.
+     * Converts infix tokens to postfix using the Shunting Yard algorithm.
      */
     fun shuntingYard(tokens: List<String>): List<String> {
         val output = mutableListOf<String>()
@@ -35,44 +37,29 @@ object CalculatorUtils {
                 token.matches(Regex("""\d+(\.\d+)?""")) -> output += token
                 token in precedence -> {
                     while (ops.isNotEmpty() && ops.peek() in precedence) {
-                        val top = ops.peek()!!
-                        // Right-associative for "^", left-associative for others
-                        if ((precedence[top]!! > precedence[token]!!) ||
+                        val top = ops.peek()
+                        if (
+                            (precedence[top]!! > precedence[token]!!) ||
                             (precedence[top] == precedence[token] && token != "^")
                         ) {
                             output += ops.pop()
-                        } else {
-                            break
-                        }
+                        } else break
                     }
                     ops.push(token)
                 }
-                token == "(" -> ops.push(token)
-                token == ")" -> {
-                    while (ops.isNotEmpty() && ops.peek() != "(") {
-                        output += ops.pop()
-                    }
-                    if (ops.isEmpty() || ops.peek() != "(") {
-                        throw IllegalArgumentException("Mismatched parentheses")
-                    }
-                    ops.pop() // Remove "(" from stack
-                }
+                else -> throw IllegalArgumentException("Invalid token: $token")
             }
         }
 
         while (ops.isNotEmpty()) {
-            val op = ops.pop()
-            if (op == "(" || op == ")") {
-                throw IllegalArgumentException("Mismatched parentheses")
-            }
-            output += op
+            output += ops.pop()
         }
 
         return output
     }
 
     /**
-     * Evaluates the expression in Reverse Polish Notation (postfix).
+     * Evaluates the postfix (RPN) expression.
      */
     fun evaluateRPN(rpn: List<String>): Double {
         val stack = Stack<Double>()
@@ -100,6 +87,14 @@ object CalculatorUtils {
                     val a = stack.pop()
                     stack.push(a.pow(b))
                 }
+                "√" -> {
+                    val a = stack.pop()
+                    stack.push(sqrt(a))
+                }
+                "!" -> {
+                    val a = stack.pop()
+                    stack.push(factorial(a.toInt()))
+                }
                 else -> stack.push(token.toDouble())
             }
         }
@@ -109,9 +104,11 @@ object CalculatorUtils {
         return stack.pop()
     }
 
-    /**
-     * Evaluates a given expression string.
-     */
+    private fun factorial(n: Int): Double {
+        require(n >= 0) { "Factorial is not defined for negative numbers" }
+        return if (n <= 1) 1.0 else n * factorial(n - 1)
+    }
+
     fun eval(expression: String): Double {
         val tokens = tokenize(expression)
         val rpn = shuntingYard(tokens)
