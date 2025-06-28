@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.alxayeed.calculatorcompose.eval
+import com.alxayeed.calculatorcompose.utils.CalculatorUtils
 
 @Composable
 fun CalculatorButton(
@@ -24,7 +24,7 @@ fun CalculatorButton(
                 "=" -> {
                     onResultChange(
                         try {
-                            eval(input).toString()
+                            CalculatorUtils.eval(input).toString()
                         } catch (e: Exception) {
                             "Error: $e"
                         }
