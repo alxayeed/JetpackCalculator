@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.alxayeed.calculatorcompose.components.CalculatorButton
+import com.alxayeed.calculatorcompose.ui.theme.Red300
 
 @Composable
 fun SimpleCalculator(
@@ -17,7 +19,7 @@ fun SimpleCalculator(
         listOf("7", "8", "9", "/"),
         listOf("4", "5", "6", "*"),
         listOf("1", "2", "3", "-"),
-        listOf("C", "0", "=", "+")
+        listOf("⌫", "0", "=", "+")
     )
 
     Column {
@@ -34,7 +36,8 @@ fun SimpleCalculator(
                         label = label,
                         input = input,
                         onInputChange = onInputChange,
-                        onResultChange = onResultChange
+                        onResultChange = onResultChange,
+                        fontSize = if (label == "⌫") 26 else 40,
                     )
                 }
             }

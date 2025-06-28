@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.alxayeed.calculatorcompose.components.CalculatorButton
+import com.alxayeed.calculatorcompose.ui.theme.Red300
 
 @Composable
 fun AdvancedCalculator(
@@ -33,7 +35,7 @@ fun AdvancedCalculator(
             listOf("7", "8", "9", "/"),
             listOf("4", "5", "6", "*"),
             listOf("1", "2", "3", "-"),
-            listOf("C", "0", "=", "+")
+            listOf("⌫", "0", "=", "+")
         )
 
         for (row in advancedButtonLayout) {
@@ -47,10 +49,10 @@ fun AdvancedCalculator(
                     CalculatorButton(
                         label = label,
                         size = 70,
-                        fontSize = 30,
                         input = input,
                         onInputChange = onInputChange,
-                        onResultChange = onResultChange
+                        onResultChange = onResultChange,
+                        fontSize = if (label == "⌫") 20 else 40,
                     )
                 }
             }
