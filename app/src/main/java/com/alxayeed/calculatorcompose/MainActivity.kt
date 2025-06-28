@@ -6,12 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,17 +29,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalculatorApp() {
     var input by remember { mutableStateOf("") }
     var result by remember { mutableStateOf("0") }
 
-    Scaffold(
-//        topBar = {
-//            TopAppBar(title = { Text("Kotlin Compose Calculator") })
-//        }
-    ) { paddingValues ->
+    Scaffold { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -49,17 +42,20 @@ fun CalculatorApp() {
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            OutlinedTextField(
-                value = input,
-                onValueChange = { newInput -> input = newInput },
-                label = { Text("Enter expression") },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done
-                ),
-                modifier = Modifier.fillMaxWidth()
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+                    .padding(8.dp),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                Text(
+                    text = input.ifEmpty { "0" },
+                    style = MaterialTheme.typography.headlineMedium,
+                    maxLines = 1
+                )
+            }
+
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -94,7 +90,7 @@ fun CalculatorApp() {
                                     result = try {
                                         eval(input).toString()
                                     } catch (e: Exception) {
-                                        "Error"
+                                        "Error: $e"
                                     }
                                 }
                                 "C" -> {
