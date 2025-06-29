@@ -1,4 +1,4 @@
-package com.alxayeed.calculatorcompose.util
+package com.alxayeed.calculatorcompose.utils
 
 import java.util.Stack
 import kotlin.math.pow
