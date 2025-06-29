@@ -2,9 +2,17 @@ package com.alxayeed.calculatorcompose.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
+import android.content.res.Configuration
+
 import kotlin.math.min
 
 object ScreenUtils {
+
+    @Composable
+    fun isPortrait(): Boolean {
+        val configuration = LocalConfiguration.current
+        return configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+    }
 
     /**
      * Dynamically calculates the button size to fit the screen
@@ -29,6 +37,10 @@ object ScreenUtils {
         val maxButtonWidth = (screenWidth - horizontalPadding) / columns
         val maxButtonHeight = (screenHeight - verticalPadding) / rows
 
-        return min(maxButtonWidth, maxButtonHeight)
+        return if (isPortrait())
+            min(maxButtonWidth, maxButtonHeight)
+        else
+            maxButtonWidth
     }
+
 }
