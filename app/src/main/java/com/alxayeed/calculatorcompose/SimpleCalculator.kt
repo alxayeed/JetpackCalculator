@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.alxayeed.calculatorcompose.components.CalculatorButton
 import com.alxayeed.calculatorcompose.ui.theme.Red300
+import com.alxayeed.calculatorcompose.utils.ScreenUtils.calculateButtonSize
 
 @Composable
 fun SimpleCalculator(
@@ -21,6 +22,9 @@ fun SimpleCalculator(
         listOf("1", "2", "3", "-"),
         listOf("⌫", "0", "=", "+")
     )
+
+    val buttonSize = calculateButtonSize(columns = 4, rows = buttonLayout.size)
+
 
     Column {
         for (row in buttonLayout) {
@@ -37,6 +41,7 @@ fun SimpleCalculator(
                         input = input,
                         onInputChange = onInputChange,
                         onResultChange = onResultChange,
+                        size = buttonSize,
                         fontSize = if (label == "⌫") 26 else 40,
                     )
                 }

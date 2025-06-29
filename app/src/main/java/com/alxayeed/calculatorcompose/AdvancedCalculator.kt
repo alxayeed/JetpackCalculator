@@ -38,7 +38,7 @@ fun AdvancedCalculator(
             listOf("⌫", "0", "=", "+"),
         )
 
-        val buttonSize = calculateButtonSize(columns = 4, rows = 5)
+        val buttonSize = calculateButtonSize(columns = 4, rows = advancedButtonLayout.size)
 
         val weightPerRow = 1f
 
