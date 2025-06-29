@@ -20,6 +20,15 @@ fun CalculatorButton(
     size: Int = 80,
     fontSize: Int = 40,
 ) {
+    val operatorLabels = setOf("+", "-", "*", "/", "%", "^", "√", "!")
+
+    val buttonColor = when (label) {
+        "⌫" -> Color.Gray
+        "=" -> Color(0xFF198754)
+        in operatorLabels -> Color(0xFFFF9800)
+        else -> Color.Unspecified
+    }
+
     Button(
         onClick = {
             when (label) {
@@ -33,18 +42,11 @@ fun CalculatorButton(
                     )
                 }
 
-                "C" -> {
-                    onInputChange("")
-                    onResultChange("0")
-                }
-
-                "Del" -> {
+                "C", "Del", "⌫" -> {
                     if (input.isNotEmpty()) {
                         onInputChange(input.dropLast(1))
                     }
                 }
-
-
 
                 else -> {
                     onInputChange(input + label)
@@ -52,14 +54,7 @@ fun CalculatorButton(
             }
         },
         modifier = Modifier.size(size.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = when (label) {
-                "⌫" -> Color.Gray
-                "=" -> Color(0xFF198754)
-                else -> Color.Unspecified
-            }
-        )
-
+        colors = ButtonDefaults.buttonColors(containerColor = buttonColor)
     ) {
         Text(label, fontSize = fontSize.sp)
     }

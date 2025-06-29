@@ -29,7 +29,7 @@ fun ClearButton(
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
     ) {
         Text(
-            text = "Clear",
+            text = "C",
             fontSize = 12.sp,
 
         )
