@@ -1,5 +1,6 @@
 package com.alxayeed.calculatorcompose
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,10 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.alxayeed.calculatorcompose.components.CalculatorButton
-import com.alxayeed.calculatorcompose.ui.theme.Red300
+import com.alxayeed.calculatorcompose.utils.ScreenUtils.calculateButtonSize
 
 @Composable
 fun AdvancedCalculator(
@@ -35,20 +35,25 @@ fun AdvancedCalculator(
             listOf("7", "8", "9", "/"),
             listOf("4", "5", "6", "*"),
             listOf("1", "2", "3", "-"),
-            listOf("⌫", "0", "=", "+")
+            listOf("⌫", "0", "=", "+"),
         )
+
+        val buttonSize = calculateButtonSize(columns = 4, rows = 5)
+
+        val weightPerRow = 1f
 
         for (row in advancedButtonLayout) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .weight(weightPerRow)
                     .padding(vertical = 4.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 for (label in row) {
                     CalculatorButton(
                         label = label,
-                        size = 70,
+                        size = buttonSize,
                         input = input,
                         onInputChange = onInputChange,
                         onResultChange = onResultChange,
